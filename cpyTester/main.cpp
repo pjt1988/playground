@@ -112,9 +112,6 @@ int main(int argc, char** argv){
   printf("The less arse way needed %.4fs\n",elapsed.count());
 
             
-
-
-
   return 0;
 }
 
