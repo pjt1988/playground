@@ -6,6 +6,7 @@
 #include <string>
 #include <omp.h>
 #include <string.h>
+#include <iterator>
 
 std::map<std::string,std::string> parse_opts(int argc, char* argv[]){
 
@@ -85,13 +86,13 @@ int main(int argc, char** argv){
   }
 
   elapsed = end - start;
-  printf("The STL way needed %.4fs\n", elapsed.count());
+  printf("The STL way needed %.4fs\n\n", elapsed.count());
 
   {
     int num_threads = omp_get_max_threads();
     if(num_threads > max_threads) num_threads = max_threads;
     if((int) nbr < num_threads) num_threads = (int) nbr;
-    printf("\nRunning with %i threads \n", num_threads);
+    printf("Running with %i threads \n", num_threads);
     
     std::vector<std::vector<double> > target(nbr*nbr);
     start = std::chrono::system_clock::now();
@@ -109,7 +110,26 @@ int main(int argc, char** argv){
   }
 
   elapsed = end - start;
-  printf("The less arse way needed %.4fs\n",elapsed.count());
+  printf("The less arse way needed %.4fs\n\n",elapsed.count());
+
+  //test via back inserter
+  {
+    std::vector<std::vector<double> > target(nbr*nbr);
+    start = std::chrono::system_clock::now();
+    std::copy(baseBCSR.begin(),baseBCSR.end(),back_inserter(target));
+    end = std::chrono::system_clock::now();
+  }
+  elapsed = end - start;
+  printf("The \"better\" STL way needed %.4fs\n\n", elapsed.count());
+
+  //via copy constructor - unfair since i excluded the alloc of target earlier
+  {
+    start = std::chrono::system_clock::now();
+    auto target(baseBCSR);
+    end = std::chrono::system_clock::now();
+  }
+  elapsed = end - start;
+  printf("Copy Construction needed %.4fs\n\n",elapsed.count());
 
             
   return 0;
