@@ -53,6 +53,7 @@ int main(int argc, char** argv){
   std::chrono::time_point<std::chrono::system_clock> start,end; 
 
   start = std::chrono::system_clock::now();
+  
   //let's generate some BCSR matrix with random-ish occupancy
   std::vector<std::vector<double> > baseBCSR(nbr*nbr);
   std::vector<size_t> rp(nbr + 1, 0);
