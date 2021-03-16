@@ -76,7 +76,10 @@ int main(int argc, char** argv){
   end = std::chrono::system_clock::now();
   std::chrono::duration<double> elapsed = end - start; //blabla, inefficient who cares...
 
-  printf("Generated %lu x %lu BCSR matrix - target/actual OCC %.3f/%.3f [%.3fs] \n\n", nbr,nbr, tocc, (double) occ_count / (nbr*nbr), elapsed.count());
+  double occ = (double) occ_count / (nbr*nbr);
+  printf("Generated %lu x %lu block-row BCSR matrix of %lu x %lu blocks - target/actual OCC %.3f/%.3f [%.3fs] \n", nbr,nbr, bldim, bldim, tocc, occ, elapsed.count());
+  double size = nbr * nbr * bldim * bldim * sizeof(double) / 1024.0 / 1024.0 / 1024.0 * occ; 
+  printf("Total amount of mem inside matrix (+minor overhead): %.4f GB\n\n", size);
 
   {
     std::vector<std::vector<double> > target(nbr*nbr);
@@ -120,7 +123,7 @@ int main(int argc, char** argv){
     end = std::chrono::system_clock::now();
   }
   elapsed = end - start;
-  printf("The \"better\" STL way needed %.4fs\n\n", elapsed.count());
+  printf("The \"better\" STL way via back inserter needed %.4fs\n\n", elapsed.count());
 
   //via copy constructor - unfair since i excluded the alloc of target earlier
   {
