@@ -89,7 +89,7 @@ int main(int argc, char** argv){
   }
 
   elapsed = end - start;
-  printf("The STL way needed %.4fs\n\n", elapsed.count());
+  printf("The STL way needed %.4f s\n\n", elapsed.count());
 
   {
     int num_threads = omp_get_max_threads();
@@ -113,7 +113,7 @@ int main(int argc, char** argv){
   }
 
   elapsed = end - start;
-  printf("The less arse way needed %.4fs\n\n",elapsed.count());
+  printf("The less arse way needed %.4f s\n\n",elapsed.count());
 
   //test via back inserter
   {
@@ -123,7 +123,7 @@ int main(int argc, char** argv){
     end = std::chrono::system_clock::now();
   }
   elapsed = end - start;
-  printf("The \"better\" STL way via back inserter needed %.4fs\n\n", elapsed.count());
+  printf("The \"better\" STL way via back inserter needed %.4f s\n\n", elapsed.count());
 
   //via copy constructor - unfair since i excluded the alloc of target earlier
   {
@@ -132,7 +132,7 @@ int main(int argc, char** argv){
     end = std::chrono::system_clock::now();
   }
   elapsed = end - start;
-  printf("Copy Construction needed %.4fs\n\n",elapsed.count());
+  printf("Copy Construction needed %.4f s\n\n",elapsed.count());
 
             
   return 0;
